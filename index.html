@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    .date-block{
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <thead>
+      <th>Minggu</th>
+      <th>Senin</th>
+      <th>Selasa</th>
+      <th>Rabu</th>
+      <th>Kamis</th>
+      <th>Jumat</th>
+      <th>Sabtu</th>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+  moment.locale('id')
+
+  mapCalendar(5, 2019)
+
+  /**
+   * Month, Jan: 0, Des: 11
+   */
+  function mapCalendar(month, year){
+    let date = new Date(year, month)
+
+    let firstDay = moment(date).startOf('month').day()
+    let lastDay = moment(date).endOf('month').day()
+    let daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+    let daysStack = Array.from({length: daysInMonth}, (v, k) => k+1);
+
+    let trs = ''
+
+    /**
+     * 
+     *
+     */
+    for(let i = 0 ; i < 6 ; i++){
+      let tds = ''
+      for(let j = 0 ; j < 7 ; j++){
+        if(daysStack.length == 0){
+          tds += `<td></td>`
+          continue;
+        }
+        if(i == 0 && j < firstDay){
+          tds += `<td></td>`
+          continue;
+        }
+        tds += `<td width="60px" height="45px"><div>${daysStack[0]}</div></td>`
+        daysStack.shift();
+      }
+      trs += `<tr>${tds}</tr>`
+    }
+
+    $('table > tbody').html(trs)
+  }
+</script>
+</html>

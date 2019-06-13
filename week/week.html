@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .date-header-block {
+      width: 180px;
+      height: 30px;
+      display: inline-block;
+      background-color: #3498db;
+      justify-content: center;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      border: .5px solid #95a5a6;
+    }
+
+    .date-content-container{
+      width: 180px;
+      border: 1px solid #95a5a6;
+      padding: 5px;
+    }
+
+    .content-block{
+      display: block;
+      width: 100%;
+      color: #FFF;
+      background-color: #3498db;
+      margin-top: 3px;
+      padding: 5px;
+      border-radius: 2px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="display: flex; flex-direction: row" id="date-header-container">
+  </div>
+  <div id="date-contents-container" style="display: flex; flex-direction: row"></div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/locale/id.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+  moment.locale('id')
+  const dayRange = 7;
+
+  mapCalendar(13, 5, 2019)
+
+  /**
+   * Month, Jan: 0, Des: 11
+   */
+  function mapCalendar(day, month, year) {
+    let date = new Date(year, month, day)
+    console.log(date)
+
+    let datesInAWeek = []
+
+    let chosenDate = moment(date)
+    let dateSevenDaysLater = moment(date).add(dayRange, 'days')
+
+    let start = new Date(chosenDate.format('MM-DD-YYYY'))
+    let end = new Date(dateSevenDaysLater.format('MM-DD-YYYY'))
+    while(start < end){
+      datesInAWeek.push(moment(start).format('MM-DD-YYYY'));
+      var newDate = start.setDate(start.getDate() + 1);
+      start = new Date(newDate);  
+    }
+
+    console.log(datesInAWeek)
+
+    let headerDivs = ''
+    for(let i = 0 ; i < datesInAWeek.length ; i ++){
+      headerDivs += 
+      `
+        <div class="date-header-block"><span>${moment(datesInAWeek[i]).format('dddd LL')}</span></div>
+      `
+    }
+    $('#date-header-container').html(headerDivs)
+
+    let contentsContainerDivs = ''
+    for(let i = 0 ; i < dayRange ; i++){
+      let dateId = moment(datesInAWeek[i]).format('YYYY-MM-DD').replace('-','').replace('-','');
+      contentsContainerDivs += `
+        <div class="date-content-container" id="${dateId}">
+          <div class="content-block">
+            18.00 - Perkawinan Pasangan 1 & Pasangan 2 (Pastor Gantang)
+          </div>
+          <div class="content-block">
+            19.00 Perkawinan A & B (Pastor Gantang)
+          </div>
+          <div class="content-block">
+            20.00 Perkawinan Pasangan 3 & Pasangan 4 (Pastor Gantang)
+          </div>
+        </div>
+      `
+    } 
+    $('#date-contents-container').html(contentsContainerDivs)
+  }
+</script>
+
+</html>

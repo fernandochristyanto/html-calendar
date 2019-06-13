@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .date-header-block {
+      width: 180px;
+      height: 30px;
+      display: inline-block;
+      background-color: #3498db;
+      justify-content: center;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      border: 1px solid #95a5a6;
+    }
+
+    .date-block {
+      width: 180px;
+      height: 120px;
+      padding: 5px;
+      font-size: 12px;
+      border: 1px solid #95a5a6;
+      position: relative;
+    }
+
+    .date-text {
+      position: absolute;
+      right: 5px;
+    }
+
+    .date-contents-block{
+      top: 20px;
+      position: absolute;
+      left: 5px;
+      right: 5px;
+    }
+
+    .content-block {
+      display: block;
+      width: 100%;
+      color: #FFF;
+      background-color: #3498db;
+      margin-top: 3px;
+      padding: 2.5px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="display: flex; flex-direction: row">
+    <div class="date-header-block"><span>Senin</span></div>
+    <div class="date-header-block"><span>Selasa</span></div>
+    <div class="date-header-block"><span>Rabu</span></div>
+    <div class="date-header-block"><span>Kamis</span></div>
+    <div class="date-header-block"><span>Jumat</span></div>
+    <div class="date-header-block"><span>Sabtu</span></div>
+    <div class="date-header-block"><span>Minggu</span></div>
+  </div>
+  <div id="date-content"></div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+  moment.locale('id')
+
+  mapCalendar(5, 2019)
+
+  /**
+   * Month, Jan: 0, Des: 11
+   */
+  function mapCalendar(month, year) {
+    let date = new Date(year, month)
+
+    let firstDay = moment(date).startOf('month').day()
+    let lastDay = moment(date).endOf('month').day()
+    let daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+    let daysStack = Array.from({ length: daysInMonth }, (v, k) => k + 1);
+
+    let weekRows = ''
+
+    /**
+     * 
+     *
+     */
+    for (let i = 0; i < 6; i++) {
+      let weekBlocks = ''
+      for (let j = 0; j < 7; j++) {
+        if (daysStack.length == 0) {
+          weekBlocks += `<div class="date-block"></div>`
+          continue;
+        }
+        if (i == 0 && j < firstDay - 1) {
+          weekBlocks += `<div class="date-block"></div>`
+          continue;
+        }
+        let monthStr = month + 1 < 10 ? `0${month + 1}` : `${month + 1}`
+        let dayStr = daysStack[0] < 10 ? `0${daysStack[0]}` : `${daysStack[0]}`
+        let blockId = `${year}${monthStr}${dayStr}`
+        weekBlocks += `
+        <div class="date-block">
+          <span class="date-text">${daysStack[0]}</span>
+          <div id="${blockId}" class="date-contents-block">
+            <a class="content-block">
+              <span>08:00 Pasangan A & B</span>
+            </a>
+            <a class="content-block">
+              <span>08:00 Pasangan B & C</span>
+            </a>
+          </div>
+        </div>`
+        daysStack.shift();
+      }
+      weekRows += `<div style="display: flex; flex-direction: row">${weekBlocks}</div>`
+    }
+
+    $('#date-content').html(weekRows)
+  }
+</script>
+
+</html>
