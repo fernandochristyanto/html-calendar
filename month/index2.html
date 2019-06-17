@@ -64,7 +64,7 @@
 <body>
   <div class="row">
     <div class='col-sm-6'>
-        <div id="datepicker"></div>
+      <div id="datepicker"></div>
     </div>
   </div>
 
@@ -88,7 +88,16 @@
     $("#datepicker").datepicker({
       format: "mm-yyyy",
       viewMode: "months",
-      minViewMode: "months"
+      minViewMode: "months",
+      onSelect: function (dateText) {
+        console.log("Selected date: " + dateText + "; input's current value: " + this.value);
+      }
+    }).on('changeDate', function (event) {
+      console.log(event.date)
+      let date = moment(event.date)
+      let month = date.format('M') - 1
+      let year = date.format("YYYY") * 1
+      mapCalendar(month, year)
     });
   })
   moment.locale('id')
