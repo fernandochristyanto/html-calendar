@@ -38,7 +38,7 @@
       right: 5px;
     }
 
-    .date-contents-block{
+    .date-contents-block {
       top: 20px;
       position: absolute;
       left: 5px;
@@ -56,9 +56,19 @@
       cursor: pointer;
     }
   </style>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
 </head>
 
 <body>
+  <div class="row">
+    <div class='col-sm-6'>
+        <div id="datepicker"></div>
+    </div>
+  </div>
+
+
   <div style="display: flex; flex-direction: row">
     <div class="date-header-block"><span>Senin</span></div>
     <div class="date-header-block"><span>Selasa</span></div>
@@ -70,9 +80,17 @@
   </div>
   <div id="date-content"></div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
 <script>
+  $(document).ready(function () {
+    $("#datepicker").datepicker({
+      format: "mm-yyyy",
+      viewMode: "months",
+      minViewMode: "months"
+    });
+  })
   moment.locale('id')
 
   mapCalendar(5, 2019)
