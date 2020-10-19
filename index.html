@@ -14,7 +14,7 @@
   </style>
 </head>
 <body>
-  <table>
+  <table border="1">
     <thead>
       <th>Minggu</th>
       <th>Senin</th>
@@ -34,7 +34,7 @@
 <script>
   moment.locale('id')
 
-  mapCalendar(5, 2019)
+  mapCalendar(5, 2020)
 
   /**
    * Month, Jan: 0, Des: 11
@@ -54,21 +54,25 @@
      * 
      *
      */
-    for(let i = 0 ; i < 6 ; i++){
-      let tds = ''
+    let currRow = 0;
+    while(daysStack.length > 0){
+      let tds = '';
       for(let j = 0 ; j < 7 ; j++){
+        // Fill remaining with empty columns
         if(daysStack.length == 0){
           tds += `<td></td>`
           continue;
         }
-        if(i == 0 && j < firstDay){
+        // Fill with empty column until first day
+        if(currRow == 0 && j < firstDay){
           tds += `<td></td>`
           continue;
         }
         tds += `<td width="60px" height="45px"><div>${daysStack[0]}</div></td>`
         daysStack.shift();
       }
-      trs += `<tr>${tds}</tr>`
+      trs += `<tr>${tds}</tr>`;
+      currRow++;
     }
 
     $('table > tbody').html(trs)
